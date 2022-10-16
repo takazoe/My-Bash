@@ -23,7 +23,7 @@ OPENCV_CONTRIB='NO'          # Install OpenCV's extra modules (YES/NO)
 
 
 # 0. REMOVE OLD VERSION
-
+sudo apt autoremove libopencv-dev
 
 
 # 1. KEEP UBUNTU OR DEBIAN UP TO DATE
@@ -79,15 +79,17 @@ cd OpenCV && mkdir build && cd build
 
 if [ $OPENCV_CONTRIB = 'NO' ]; then
 cmake -DWITH_QT=ON -DWITH_OPENGL=ON -DFORCE_VTK=ON -DWITH_TBB=ON -DWITH_GDAL=ON \
-      -DWITH_XINE=ON -DENABLE_PRECOMPILED_HEADERS=OFF ..
+      -DWITH_XINE=ON -DENABLE_PRECOMPILED_HEADERS=OFF ..\
+      -DOPENCV_GENERATE_PKGCONFIG=ON ..
 fi
 
 if [ $OPENCV_CONTRIB = 'YES' ]; then
 cmake -DWITH_QT=ON -DWITH_OPENGL=ON -DFORCE_VTK=ON -DWITH_TBB=ON -DWITH_GDAL=ON \
       -DWITH_XINE=ON -DENABLE_PRECOMPILED_HEADERS=OFF \
-      -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ..
+      -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ..\
+      -DOPENCV_GENERATE_PKGCONFIG=ON ..
 fi
 
-make -j4
+make -j8
 sudo make install
 sudo ldconfig
